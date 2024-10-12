@@ -46,15 +46,6 @@ const TableUIGroup = ({
     console.log("Exportando a registros", exportData);
   };
 
-  const exportarData = () => {
-    console.log("Exportando a Data", tabla.data);
-  };
-
-  const excluidasEditar = [];
-  const excluidasEliminar = [];
-  const excluidasVer = [];
-  const excluirFiltrosFiltros = [];
-
   return (
     <div className="container-table mt-3 mb-5">
       <MaterialReactTable
@@ -66,87 +57,27 @@ const TableUIGroup = ({
             enableResizing: true,
           },
         }}
-        enableColumnResizing={true}
-        enableGrouping={true}
-        enableStickyHeader={true}
-        enableStickyFooter={true}
-        //columnFilterDisplayMode= "popover" //Scroll horizontal, popover (si scroll) y custom (ajustar)
-        initialState={{
-          showGlobalFilter: true,
-          density: "compact",
-          grouping: tabla.agrupacion,
-          sorting: [{ id: "BL_IMPORTACION", desc: false }],
-        }} //showGlobalFilter: mostrar el buscador inicial. density: Espaciado entre filas 'comfortable' | 'compact' | 'spacious'
+        enableExpandAll={false}
+        enableExpanding={true}
+        filterFromLeafRows={true}
+        getSubRows={(row) => row.subRows}
+        initialState={{ showGlobalFilter: true, density: "compact" }}
+        paginateExpandedRows={false}
+        muiExpandButtonProps={({ row, table }) => ({
+          onClick: () => table.setExpanded({ [row.id]: !row.getIsExpanded() }), //only 1 detail panel open at a time
+          sx: {
+            transform: row.getIsExpanded()
+              ? "rotate(180deg)"
+              : "rotate(-90deg)",
+            transition: "transform 0.2s",
+          },
+        })}
         positionActionsColumn="first"
         onPaginationChange={setPagination}
         state={{ pagination }}
         muiTableContainerProps={{
           style: { maxHeight: "60vh", minHeight: "50vh" },
         }}
-        muiTablePaperProps={{ elevation: 5, sx: { m: "auto", maxWidth: 5000 } }}
-        enableRowActions={tabla.data.length > 0 ? true : false}
-        renderRowActions={({ row }) =>
-          row.original.ESTADO !== "Eliminado" &&
-          row.original.ESTADO !== "" && (
-            <Box sx={{ display: "flex", gap: "0rem" }}>
-              {!excluidasEditar.includes(pantalla) &&
-                row.original.ESTADO !== "Finalizado" && (
-                  <Tooltip arrow placement="left" title="Editar">
-                    <IconButton
-                      style={{ color: "#FFA420" }}
-                      onClick={() =>
-                        onClicActions(2, row.original.ID, row.original)
-                      }
-                    >
-                      <i className="bi bi-pencil-fill"></i>
-                    </IconButton>
-                  </Tooltip>
-                )}
-              {!excluidasEliminar.includes(pantalla) &&
-                row.original.ESTADO !== "Finalizado" && (
-                  <Tooltip arrow placement="left" title="Eliminar">
-                    <IconButton
-                      style={{ color: "RED" }}
-                      onClick={() =>
-                        onClicActions(3, row.original.ID, row.original)
-                      }
-                    >
-                      <i className="bi bi-trash"></i>
-                    </IconButton>
-                  </Tooltip>
-                )}
-              {!excluidasVer.includes(pantalla) && (
-                /*(row.original.ESTADO === "Finalizado" ||
-                  row.original.ESTADO === "Modificado") &&*/ <Tooltip
-                  arrow
-                  placement="left"
-                  title="Ver"
-                >
-                  <IconButton
-                    style={{ color: "#00AC00" }}
-                    onClick={() =>
-                      onClicActions(5, row.original.ID, row.original)
-                    }
-                  >
-                    <i className="bi bi-eye"></i>
-                  </IconButton>
-                </Tooltip>
-              )}
-              {pantalla == "USUARIOS" && row.original.ESTADO === "Activo" && (
-                <Tooltip arrow placement="left" title="Restablecer contraseña">
-                  <IconButton
-                    color="primary"
-                    onClick={() =>
-                      onClicActions(4, row.original.ID, row.original)
-                    }
-                  >
-                    <i className="bi bi-arrow-clockwise"></i>
-                  </IconButton>
-                </Tooltip>
-              )}
-            </Box>
-          )
-        }
       />
     </div>
   );

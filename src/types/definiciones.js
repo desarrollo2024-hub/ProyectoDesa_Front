@@ -20,6 +20,7 @@ export const endPoint = {
   modArchivo: "/archivos",
   modDespacho: "/despacho",
   modInventario: "/inventario",
+  modSeguimiento: "/flujo",
   cambioEtapa: "/cambiarEtapa",
   login: "/login",
   usuariosSesion: "/recuperarSesion",
@@ -46,6 +47,7 @@ export const endPoint = {
   inventario: "/inventario",
   stock: "/stock",
   graficaInventario: "/graficaInventario",
+  seguimiento: "/tablaFlujo",
 };
 
 export const datosReload = {

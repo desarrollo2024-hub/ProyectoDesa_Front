@@ -370,8 +370,13 @@ export const Despacho = () => {
           return;
         }*/
 
+        const clienteTemp = selectBox.bl.find(
+          (item) => item.value === valoresForm.bl
+        );
+
         const json = {
           ...valoresForm,
+          cliente: clienteTemp.cliente || "",
           //valoresTabla: resultCreate.data,
         };
 
@@ -919,6 +924,7 @@ export const Despacho = () => {
         return {
           value: obj.id,
           descripcion: obj.descripcion,
+          cliente: obj.cliente,
         };
       });
 

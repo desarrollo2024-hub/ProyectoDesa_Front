@@ -18,6 +18,7 @@ import { Despacho } from "./componentes/views/despacho/Despacho";
 import { Inventario } from "./componentes/views/inventario/Inventario";
 import { Stock } from "./componentes/views/inventario/Stock";
 import { GraficaInventario } from "./componentes/views/inventario/GraficaInventario";
+import { TablaFlujo } from "./componentes/views/flujo/TablaFlujo";
 
 const componentesDisponibles = {
   Rol: <Rol />,
@@ -32,6 +33,7 @@ const componentesDisponibles = {
   Inventario: <Inventario />,
   Stock: <Stock />,
   GraficaInventario: <GraficaInventario />,
+  TablaFlujo: <TablaFlujo />,
 };
 
 const renderRoutes = (rutas, path = "") => {

@@ -35,6 +35,7 @@ export const Importacion = () => {
     barco: "",
     puertoOrigen: "",
     puertoDestino: "",
+    cliente: "",
     fechaArribo: "",
   };
   const estadoInicialModal = {
@@ -305,25 +306,8 @@ export const Importacion = () => {
           filtro
       );
       setInformacion(data.respuesta);
-
       //ESPACIO PARA ARREGLOS
-      let newObjeto = "";
-      let arraySelect = {};
-
-      newObjeto = data.respuesta.valSelect.Puerto.map((obj) => {
-        return {
-          value: obj.id,
-          descripcion: obj.nombre,
-        };
-      });
-
-      arraySelect = {
-        ...arraySelect,
-        puertoOrigen: newObjeto,
-        puertoDestino: newObjeto,
-      };
-
-      setSelectBox(arraySelect);
+      setSelectBox(data.respuesta.valoresSelectBox);
       sendAnalyticsEvent(`${campoAnalytics} Tabla Exitoso`, {
         filtro: filtro,
         cantidad: data.respuesta.length,
