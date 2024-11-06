@@ -16,11 +16,7 @@ const { useBreakpoint } = Grid;
 const pantallaComponente = ["DESPACHO", "DESPACHOS", "Despacho"];
 
 // Función para enviar eventos a Google Analytics
-const sendAnalyticsEvent = (eventName, eventParams = {}) => {
-  if (window.gtag) {
-    window.gtag("event", eventName, eventParams);
-  }
-};
+
 const campoAnalytics = "Despacho";
 const campoPrincipal = "bl";
 
@@ -166,16 +162,9 @@ export const Despacho = () => {
         toast.success(data.mensaje);
         setShowHideAdjuntarExcel(!showHideAdjuntarExcel);
         await recuperaInformacion(filtroSeleccionados);
-        sendAnalyticsEvent(`${campoAnalytics} Carga Excel Exitoso`);
       })
       .catch((error) => {
         errorRequest(error);
-        sendAnalyticsEvent(`${campoAnalytics} Carga Excel Fallido`, {
-          error:
-            error.response.data.errors ||
-            error.response.data.mensaje ||
-            "Error desconocido",
-        });
       })
       .finally(() => isLoading(false));
   };
@@ -200,16 +189,9 @@ export const Despacho = () => {
         a.href = url;
         a.download = nombreArchivo;
         a.click();
-        sendAnalyticsEvent(`${campoAnalytics} Descarga Excel Exitoso`);
       })
       .catch((error) => {
         errorRequest(error);
-        sendAnalyticsEvent(`${campoAnalytics} Descarga Excel Fallido`, {
-          error:
-            error.response.data.errors ||
-            error.response.data.mensaje ||
-            "Error desconocido",
-        });
       })
       .finally(() => isLoading(false));
   };
@@ -234,16 +216,9 @@ export const Despacho = () => {
         a.href = url;
         a.download = nombreArchivo;
         a.click();
-        sendAnalyticsEvent(`${campoAnalytics} Descarga Plantilla Exitoso`);
       })
       .catch((error) => {
         errorRequest(error);
-        sendAnalyticsEvent(`${campoAnalytics} Descarga Plantilla Fallido`, {
-          error:
-            error.response.data.errors ||
-            error.response.data.mensaje ||
-            "Error desconocido",
-        });
       })
       .finally(() => isLoading(false));
   };
@@ -388,17 +363,8 @@ export const Despacho = () => {
           toast.success(data.mensaje);
           limpiezaForm();
           await recuperaInformacion(filtroSeleccionados);
-          sendAnalyticsEvent(`${campoAnalytics} Crea Exitoso`, {
-            dato: valoresForm[campoPrincipal],
-          });
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Crea Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
@@ -409,10 +375,7 @@ export const Despacho = () => {
         if (!resultUpdate.success) {
           toast.error(resultUpdate.error);
           isLoading(false);
-          sendAnalyticsEvent(
-            `${campoAnalytics} Validaciones Modifica Fallido`,
-            { error: resultUpdate.error }
-          );
+
           return;
         }
 
@@ -429,17 +392,8 @@ export const Despacho = () => {
           toast.success(data.mensaje);
           limpiezaForm();
           await recuperaInformacion(filtroSeleccionados);
-          sendAnalyticsEvent(`${campoAnalytics} Modifica Exitoso`, {
-            dato: valoresForm[campoPrincipal],
-          });
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Modifica Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
@@ -455,17 +409,8 @@ export const Despacho = () => {
           toast.success(data.mensaje);
           limpiezaForm();
           await recuperaInformacion(filtroSeleccionados);
-          sendAnalyticsEvent(`${campoAnalytics} Elimina Exitoso`, {
-            dato: estadoIniCRUDmodal.usuario,
-          });
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Elimina Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
@@ -476,10 +421,7 @@ export const Despacho = () => {
         if (!resultCambioEtapa.success) {
           toast.error(resultCambioEtapa.error);
           isLoading(false);
-          sendAnalyticsEvent(
-            `${campoAnalytics} Validaciones Modifica Fallido`,
-            { error: resultCambioEtapa.error }
-          );
+
           return;
         }
 
@@ -494,17 +436,8 @@ export const Despacho = () => {
           toast.success(data.mensaje);
           limpiezaForm();
           await recuperaInformacion(filtroSeleccionados);
-          sendAnalyticsEvent(`${campoAnalytics} Modifica Exitoso`, {
-            dato: valoresForm[campoPrincipal],
-          });
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Modifica Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
@@ -589,14 +522,12 @@ export const Despacho = () => {
 
         setTableData(newTableData);
         isLoading(false);
-        sendAnalyticsEvent(`${campoAnalytics} Carga Total Exitoso`, {
-          dato: estadoIniCRUDmodal.id,
-        });
+
         break;
       default:
         isLoading(false);
         toast.warning(caseDefaultSubmit);
-        sendAnalyticsEvent(`${campoAnalytics} Acción Desconocida`);
+
         break;
     }
   };
@@ -612,7 +543,7 @@ export const Despacho = () => {
       case 1: //Crear Registro
         //setTableData(data);
         //setShowAcciones(true);
-        sendAnalyticsEvent(`${campoAnalytics} Modal Crea`);
+
         setEstadoIniCRUDmodal({
           tipoCRUD: 1,
           tituloModal: `CREAR ${pantallaComponente[0]}`,
@@ -624,9 +555,6 @@ export const Despacho = () => {
         isLoading(false);
         break;
       case 2: //Modificar || Leer Registro
-        sendAnalyticsEvent(
-          `${campoAnalytics} Modal ${option === 2 ? "Modifica" : "Consulta"}`
-        );
         setEstadoIniCRUDmodal({
           id,
           tipoCRUD: option,
@@ -671,21 +599,13 @@ export const Despacho = () => {
           };
           setSelectBox(arraySelect);
           setShowModalCRUD(!showModalCRUD);
-          sendAnalyticsEvent(`${campoAnalytics} Muestra Registros Exitoso`);
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Muestra Registros Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
         break;
       case 3: //Eliminar Registro
-        sendAnalyticsEvent(`${campoAnalytics} Modal Elimina`);
         setEstadoIniCRUDmodal({
           tipoCRUD: 3,
           tituloModal: `ELIMINAR ${pantallaComponente[0]}`,
@@ -713,7 +633,6 @@ export const Despacho = () => {
       default:
         isLoading(false);
         toast.warning(caseDefaultClick);
-        sendAnalyticsEvent(`${campoAnalytics} OnClick Incorrecto`);
         break;
     }
   };
@@ -936,18 +855,8 @@ export const Despacho = () => {
       };
 
       setSelectBox(arraySelect);
-      sendAnalyticsEvent(`${campoAnalytics} Tabla Exitoso`, {
-        filtro: filtro,
-        cantidad: data.respuesta.length,
-      });
     } catch (error) {
       errorRequest(error);
-      sendAnalyticsEvent(`${campoAnalytics} Tabla Fallido`, {
-        error:
-          error.response.data.errors ||
-          error.response.data.mensaje ||
-          "Error desconocido",
-      });
     } finally {
       isLoading(false);
     }
@@ -965,9 +874,6 @@ export const Despacho = () => {
       }
       setFiltroSeleccionados(valores);
       await recuperaInformacion(valores);
-      sendAnalyticsEvent(`${campoAnalytics} Cambio Filtro`, {
-        nuevoFiltro: valores,
-      });
     };
     pintaUsuarioFiltros();
   }, [filtrosTabla]);

@@ -23,11 +23,7 @@ const { Title } = Typography;
 const { useBreakpoint } = Grid;
 
 // Función para enviar eventos a Google Analytics
-const sendAnalyticsEvent = (eventName, eventParams = {}) => {
-  if (window.gtag) {
-    window.gtag("event", eventName, eventParams);
-  }
-};
+
 const campoAnalytics = "Grafica Inventario";
 
 export const GraficaInventario = () => {
@@ -83,18 +79,8 @@ export const GraficaInventario = () => {
         sucursalDespachado,
         productoXDespacho,
       });
-      sendAnalyticsEvent(`${campoAnalytics} Tabla Exitoso`, {
-        filtro: filtro,
-        cantidad: data.respuesta.length,
-      });
     } catch (error) {
       errorRequest(error);
-      sendAnalyticsEvent(`${campoAnalytics} Tabla Fallido`, {
-        error:
-          error.response.data.errors ||
-          error.response.data.mensaje ||
-          "Error desconocido",
-      });
     } finally {
       isLoading(false);
     }

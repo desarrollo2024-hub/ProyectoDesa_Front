@@ -14,11 +14,7 @@ const { useBreakpoint } = Grid;
 const pantallaComponente = ["IMPORTACION", "IMPORTACIONES", "Importación"];
 
 // Función para enviar eventos a Google Analytics
-const sendAnalyticsEvent = (eventName, eventParams = {}) => {
-  if (window.gtag) {
-    window.gtag("event", eventName, eventParams);
-  }
-};
+
 const campoAnalytics = "Importacion";
 const campoPrincipal = "bl";
 
@@ -85,14 +81,14 @@ export const Importacion = () => {
         if (valoresForm.puertoOrigen === valoresForm.puertoDestino) {
           toast.error("Puerto de origen y destinos son iguales, favor válidar");
           isLoading(false);
-          sendAnalyticsEvent(`${campoAnalytics} Puertos Iguales Crea`);
+
           return;
         }
 
         if (valoresForm.fechaArribo < valoresForm.fechaSalida) {
           toast.error("Fecha de arribo no puede ser menor a la de salida");
           isLoading(false);
-          sendAnalyticsEvent(`${campoAnalytics} Fechas Incorrectas Crea`);
+
           return;
         }
         const json = JSON.stringify(valoresForm);
@@ -104,17 +100,8 @@ export const Importacion = () => {
           toast.success(data.mensaje);
           limpiezaForm();
           await recuperaInformacion(filtroSeleccionados);
-          sendAnalyticsEvent(`${campoAnalytics} Crea Exitoso`, {
-            dato: valoresForm[campoPrincipal],
-          });
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Crea Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
@@ -123,14 +110,12 @@ export const Importacion = () => {
         if (valoresForm.puertoOrigen === valoresForm.puertoDestino) {
           toast.error("Puerto de origen y destinos son iguales, favor válidar");
           isLoading(false);
-          sendAnalyticsEvent(`${campoAnalytics} Puertos Iguales Modifica`);
           return;
         }
 
         if (valoresForm.fechaArribo < valoresForm.fechaSalida) {
           toast.error("Fecha de arribo no puede ser menor a la de salida");
           isLoading(false);
-          sendAnalyticsEvent(`${campoAnalytics} Fechas Incorrectas Modifica`);
           return;
         }
         const jsonUpdate = JSON.stringify(valoresForm);
@@ -142,17 +127,8 @@ export const Importacion = () => {
           toast.success(data.mensaje);
           limpiezaForm();
           await recuperaInformacion(filtroSeleccionados);
-          sendAnalyticsEvent(`${campoAnalytics} Modifica Exitoso`, {
-            dato: valoresForm[campoPrincipal],
-          });
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Modifica Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
@@ -168,17 +144,8 @@ export const Importacion = () => {
           toast.success(data.mensaje);
           limpiezaForm();
           await recuperaInformacion(filtroSeleccionados);
-          sendAnalyticsEvent(`${campoAnalytics} Elimina Exitoso`, {
-            dato: estadoIniCRUDmodal.usuario,
-          });
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Elimina Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
@@ -195,17 +162,8 @@ export const Importacion = () => {
           toast.success(data.mensaje);
           limpiezaForm();
           await recuperaInformacion(filtroSeleccionados);
-          sendAnalyticsEvent(`${campoAnalytics} Modifica Exitoso`, {
-            dato: valoresForm[campoPrincipal],
-          });
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Modifica Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
@@ -213,7 +171,7 @@ export const Importacion = () => {
       default:
         isLoading(false);
         toast.warning(caseDefaultSubmit);
-        sendAnalyticsEvent(`${campoAnalytics} Acción Desconocida`);
+
         break;
     }
   };
@@ -227,7 +185,6 @@ export const Importacion = () => {
     const optionTemp = option === 5 ? 2 : option;
     switch (optionTemp) {
       case 1: //Crear Registro
-        sendAnalyticsEvent(`${campoAnalytics} Modal Crea`);
         setEstadoIniCRUDmodal({
           tipoCRUD: 1,
           tituloModal: `CREAR ${pantallaComponente[0]}`,
@@ -238,9 +195,6 @@ export const Importacion = () => {
         isLoading(false);
         break;
       case 2: //Modificar || Leer Registro
-        sendAnalyticsEvent(
-          `${campoAnalytics} Modal ${option === 2 ? "Modifica" : "Consulta"}`
-        );
         setEstadoIniCRUDmodal({
           id,
           tipoCRUD: option,
@@ -261,21 +215,13 @@ export const Importacion = () => {
           );
           setearUpdateForm(data.respuesta);
           setShowModalCRUD(!showModalCRUD);
-          sendAnalyticsEvent(`${campoAnalytics} Muestra Registros Exitoso`);
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Muestra Registros Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
         break;
       case 3: //Eliminar Registro
-        sendAnalyticsEvent(`${campoAnalytics} Modal Elimina`);
         setEstadoIniCRUDmodal({
           tipoCRUD: 3,
           tituloModal: `ELIMINAR ${pantallaComponente[0]}`,
@@ -289,7 +235,6 @@ export const Importacion = () => {
       default:
         isLoading(false);
         toast.warning(caseDefaultClick);
-        sendAnalyticsEvent(`${campoAnalytics} OnClick Incorrecto`);
         break;
     }
   };
@@ -308,18 +253,8 @@ export const Importacion = () => {
       setInformacion(data.respuesta);
       //ESPACIO PARA ARREGLOS
       setSelectBox(data.respuesta.valoresSelectBox);
-      sendAnalyticsEvent(`${campoAnalytics} Tabla Exitoso`, {
-        filtro: filtro,
-        cantidad: data.respuesta.length,
-      });
     } catch (error) {
       errorRequest(error);
-      sendAnalyticsEvent(`${campoAnalytics} Tabla Fallido`, {
-        error:
-          error.response.data.errors ||
-          error.response.data.mensaje ||
-          "Error desconocido",
-      });
     } finally {
       isLoading(false);
     }
@@ -337,9 +272,6 @@ export const Importacion = () => {
       }
       setFiltroSeleccionados(valores);
       await recuperaInformacion(valores);
-      sendAnalyticsEvent(`${campoAnalytics} Cambio Filtro`, {
-        nuevoFiltro: valores,
-      });
     };
     pintaUsuarioFiltros();
   }, [filtrosTabla]);

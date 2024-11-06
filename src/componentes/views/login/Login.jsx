@@ -12,11 +12,6 @@ import { toast } from "react-toastify";
 import { Grid } from "antd";
 
 // Función para enviar eventos a Google Analytics
-const sendAnalyticsEvent = (eventName, eventParams = {}) => {
-  if (window.gtag) {
-    window.gtag("event", eventName, eventParams);
-  }
-};
 
 export const Login = () => {
   //Recuperar contexto para logear y renderizar el Contexto

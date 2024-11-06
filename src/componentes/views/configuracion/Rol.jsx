@@ -14,11 +14,7 @@ const { useBreakpoint } = Grid;
 const pantallaComponente = ["ROL", "ROLES", "Rol"];
 
 // Función para enviar eventos a Google Analytics
-const sendAnalyticsEvent = (eventName, eventParams = {}) => {
-  if (window.gtag) {
-    window.gtag("event", eventName, eventParams);
-  }
-};
+
 const campoAnalytics = "Rol";
 const campoPrincipal = "rol";
 
@@ -75,17 +71,8 @@ export const Rol = () => {
           toast.success(data.mensaje);
           limpiezaForm();
           await recuperaInformacion(filtroSeleccionados);
-          sendAnalyticsEvent(`${campoAnalytics} Crea Exitoso`, {
-            dato: valoresForm[campoPrincipal],
-          });
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Crea Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
@@ -100,17 +87,8 @@ export const Rol = () => {
           toast.success(data.mensaje);
           limpiezaForm();
           await recuperaInformacion(filtroSeleccionados);
-          sendAnalyticsEvent(`${campoAnalytics} Modifica Exitoso`, {
-            dato: valoresForm[campoPrincipal],
-          });
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Modifica Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
@@ -126,17 +104,8 @@ export const Rol = () => {
           toast.success(data.mensaje);
           limpiezaForm();
           await recuperaInformacion(filtroSeleccionados);
-          sendAnalyticsEvent(`${campoAnalytics} Elimina Exitoso`, {
-            dato: estadoIniCRUDmodal.usuario,
-          });
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Elimina Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
@@ -144,7 +113,7 @@ export const Rol = () => {
       default:
         isLoading(false);
         toast.warning(caseDefaultSubmit);
-        sendAnalyticsEvent(`${campoAnalytics} Acción Desconocida`);
+
         break;
     }
   };
@@ -158,7 +127,6 @@ export const Rol = () => {
     const optionTemp = option === 5 ? 2 : option;
     switch (optionTemp) {
       case 1: //Crear Registro
-        sendAnalyticsEvent(`${campoAnalytics} Modal Crea`);
         setEstadoIniCRUDmodal({
           tipoCRUD: 1,
           tituloModal: `CREAR ${pantallaComponente[0]}`,
@@ -169,9 +137,6 @@ export const Rol = () => {
         isLoading(false);
         break;
       case 2: //Modificar || Leer Registro
-        sendAnalyticsEvent(
-          `${campoAnalytics} Modal ${option === 2 ? "Modifica" : "Consulta"}`
-        );
         setEstadoIniCRUDmodal({
           tipoCRUD: option,
           tituloModal:
@@ -189,21 +154,13 @@ export const Rol = () => {
           );
           setearUpdateForm(data.respuesta);
           setShowModalCRUD(!showModalCRUD);
-          sendAnalyticsEvent(`${campoAnalytics} Muestra Registros Exitoso`);
         } catch (error) {
           errorRequest(error);
-          sendAnalyticsEvent(`${campoAnalytics} Muestra Registros Fallido`, {
-            error:
-              error.response.data.errors ||
-              error.response.data.mensaje ||
-              "Error desconocido",
-          });
         } finally {
           isLoading(false);
         }
         break;
       case 3: //Eliminar Registro
-        sendAnalyticsEvent(`${campoAnalytics} Modal Elimina`);
         setEstadoIniCRUDmodal({
           tipoCRUD: 3,
           tituloModal: `ELIMINAR ${pantallaComponente[0]}`,
@@ -217,7 +174,6 @@ export const Rol = () => {
       default:
         isLoading(false);
         toast.warning(caseDefaultClick);
-        sendAnalyticsEvent(`${campoAnalytics} OnClick Incorrecto`);
         break;
     }
   };
@@ -234,18 +190,8 @@ export const Rol = () => {
           filtro
       );
       setInformacion(data.respuesta);
-      sendAnalyticsEvent(`${campoAnalytics} Tabla Exitoso`, {
-        filtro: filtro,
-        cantidad: data.respuesta.length,
-      });
     } catch (error) {
       errorRequest(error);
-      sendAnalyticsEvent(`${campoAnalytics} Tabla Fallido`, {
-        error:
-          error.response.data.errors ||
-          error.response.data.mensaje ||
-          "Error desconocido",
-      });
     } finally {
       isLoading(false);
     }
@@ -262,9 +208,6 @@ export const Rol = () => {
       }
       setFiltroSeleccionados(valores);
       await recuperaInformacion(valores);
-      sendAnalyticsEvent(`${campoAnalytics} Cambio Filtro`, {
-        nuevoFiltro: valores,
-      });
     };
     pintaUsuarioFiltros();
   }, [filtrosTabla]);

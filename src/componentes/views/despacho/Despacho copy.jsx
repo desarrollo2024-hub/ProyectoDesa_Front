@@ -26,11 +26,7 @@ import {
 const pantallaComponente = ["DESPACHO", "DESPACHOS", "Despacho"];
 
 // Función para enviar eventos a Google Analytics
-const sendAnalyticsEvent = (eventName, eventParams = {}) => {
-  if (window.gtag) {
-    window.gtag("event", eventName, eventParams);
-  }
-};
+
 const campoAnalytics = "despacho";
 
 export const Despacho = () => {
